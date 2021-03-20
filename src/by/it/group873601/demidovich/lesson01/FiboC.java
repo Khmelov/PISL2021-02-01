@@ -6,7 +6,7 @@ package by.it.group873601.demidovich.lesson01;
  * время расчета должно быть не более 2 секунд
  */
 
-import sun.plugin.javascript.navig.Array;
+
 
 import java.math.BigInteger;
 import java.util.ArrayList;
