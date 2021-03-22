@@ -52,6 +52,7 @@ public class B_Huffman {
         Integer length = scanner.nextInt();
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         //тут запишите ваше решение
+
         Map<String, Character> map = new TreeMap<>();
         for(int i =0;i < count; i++){
             char c = scanner.next().charAt(0);

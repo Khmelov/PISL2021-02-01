@@ -31,32 +31,24 @@ public class A_VideoRegistrator {
         //hint: сортировка Arrays.sort обеспечит скорость алгоритма
         //C*(n log n) + C1*n = O(n log n)
 
-        Arrays.sort(events);
-
         //пока есть незарегистрированные события
         //получим одно событие по левому краю
         //и запомним время старта видеокамеры
         //вычислим момент окончания работы видеокамеры
         //и теперь пропустим все покрываемые события
         //за время до конца работы, увеличивая индекс
-
-
-        double cheack=0;
-        for (i=0;i<events.length;i++){
-            if(cheack==0){
-                result.add(events[i]);
-                cheack=events[i];
-            }else{
-                if(events[i]>result.get(result.size()-1)+workDuration){
-                    result.add(events[i]);
-                }
+        Arrays.sort(events);
+        double startTime, endTime;
+        while (i < events.length){
+            result.add(events[i]);
+            startTime = events[i];
+            endTime = startTime + workDuration;
+            while (i < events.length && events[i]<=endTime){
+                i++;
             }
-
         }
 
-        return result;                        //вернем итог
 
+        return result;                        //вернем итог
     }
 }
-
-

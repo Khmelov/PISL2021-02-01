@@ -49,8 +49,8 @@ public class B_Sheduler {
         List<Event> result;
         result = new ArrayList<>();
         //ваше решение.
-
         Arrays.sort(events, (e1, e2)-> Integer.compare(e1.stop, e2.stop));
+
 
         for(int i=0;i < events.length;i++) {
             if(events[i].start >= from && events[i].stop <= to){
@@ -58,6 +58,9 @@ public class B_Sheduler {
                 from = events[i].stop;
             }
         }
+
+
+
 
 
         return result;                        //вернем итог
