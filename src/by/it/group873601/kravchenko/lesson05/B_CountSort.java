@@ -45,7 +45,8 @@ public class B_CountSort {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
     }
 
-    static int[] sort(int[] points, int min, int max) {
+    int[] sort(int[] points, int min, int max) {
+
         int[] count = new int[max - min + 1];
         for (int point : points) {
             count[point - min]++;
@@ -56,7 +57,6 @@ public class B_CountSort {
                 points[idx++] = i + min;
             }
         }
-        //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return points;
     }
 

@@ -166,7 +166,7 @@ public class A_Huffman {
 
     public static void main(String[] args) throws FileNotFoundException {
         String root = System.getProperty("user.dir") + "/src/";//просмотреть
-        File f = new File(root + "by/it/a_khmelev/lesson03/dataHuffman.txt");
+        File f = new File(root + "by/it/a_khmelev/lesson03/dataHuffman.txt");//просмотреть
         A_Huffman instance = new A_Huffman();
         long startTime = System.currentTimeMillis();
         String result = instance.encode(f);

@@ -32,7 +32,7 @@ public class B_MergeSort {
             } else if (n >= ar_2.length & m < ar_1.length) {
                 result[i] = ar_1[m];
                 m++;
-            } else if (ar_1[m] <= ar_2[n] & m < ar_1.length) {
+            } else if (ar_1[m] <= ar_2[n]) {
                 result[i] = ar_1[m];
                 m++;
             } else {

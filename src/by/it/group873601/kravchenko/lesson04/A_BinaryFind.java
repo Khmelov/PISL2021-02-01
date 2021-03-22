@@ -57,7 +57,7 @@ public class A_BinaryFind {
                     break;
                 }
                 if (a[m] > value)
-                    right = m - 1;
+                    right = m - 1; //отбрасываем элемент и правую часть
                 else
                     left = m + 1;
             }

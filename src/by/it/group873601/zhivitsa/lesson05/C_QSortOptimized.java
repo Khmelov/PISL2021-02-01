@@ -38,15 +38,74 @@ public class C_QSortOptimized {
         int stop;
 
         Segment(int start, int stop){
-            this.start = start;
-            this.stop = stop;
+            if (start > stop){
+                this.start = stop;
+                this.stop = start;
+            }
+            else {
+                this.start = start;
+                this.stop = stop;
+            }
         }
 
         @Override
         public int compareTo(Object o) {
             //подумайте, что должен возвращать компаратор отрезков
-            return 0;
+            return Integer.compare(this.start, ((Segment)o).start);
         }
+    }
+
+
+    void qSort(Segment[] segments, int left, int right) {
+        int midI = (left + right) / 2, i = left, j = right, leftMidI = midI, rightMidI = midI;
+        Segment x = segments[midI];
+        while (true) {
+            while (i < leftMidI && segments[i].compareTo(x) <= 0) {
+                if (segments[i].compareTo(x) == 0) {
+                    leftMidI--;
+                    swap(segments, i, leftMidI);
+                } else {
+                    i++;
+                }
+            }
+            while (j > rightMidI && segments[j].compareTo(x) >= 0) {
+                if (segments[j].compareTo(x) == 0) {
+                    rightMidI++;
+                    swap(segments, j, rightMidI);
+                } else {
+                    j--;
+                }
+            }
+            if (i >= leftMidI && j <= rightMidI) {
+                break;
+            } else if (i >= leftMidI) {
+                swap(segments, ++rightMidI, j);
+                swap(segments, rightMidI, leftMidI);
+                i = leftMidI;
+                leftMidI++;
+            } else if (j <= rightMidI) {
+                swap(segments, --leftMidI, i);
+                swap(segments, leftMidI, rightMidI);
+                j = rightMidI;
+                rightMidI--;
+            } else {
+                swap(segments, i, j);
+                i++;
+                j--;
+            }
+        }
+        if (leftMidI > left) {
+            qSort(segments, left, --leftMidI);
+        }
+        if (rightMidI < right) {
+            qSort(segments, ++rightMidI, right);
+        }
+    }
+
+    void swap(Segment[] mas, int l, int r){
+        Segment tmp = mas[l];
+        mas[l] = mas[r];
+        mas[r] = tmp;
     }
 
 
@@ -68,11 +127,24 @@ public class C_QSortOptimized {
             segments[i]=new Segment(scanner.nextInt(),scanner.nextInt());
         }
         //читаем точки
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < m; i++) {
             points[i]=scanner.nextInt();
         }
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
+
+
+        qSort(segments, 0, segments.length - 1);
+        int count;
+        for (int i = 0; i < points.length; i++){
+            count = 0;
+            for (int j = 0; j < segments.length && points[i] >= segments[j].start; j++) {
+                if (points[i] <= segments[j].stop){
+                    count++;
+                }
+            }
+            result[i] = count;
+        }
 
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
@@ -88,6 +160,7 @@ public class C_QSortOptimized {
         for (int index:result){
             System.out.print(index+" ");
         }
+
     }
 
 }

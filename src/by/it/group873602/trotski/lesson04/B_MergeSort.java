@@ -75,8 +75,6 @@ public class B_MergeSort {
         a = mergeSort(a, 0, a.length - 1);
 
 
-
-
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return a;
     }
@@ -86,7 +84,6 @@ public class B_MergeSort {
         B_MergeSort instance = new B_MergeSort();
         //long startTime = System.currentTimeMillis();
         int[] result=instance.getMergeSort(stream);
-        //long finishTime = System.currentTimeMillis();
         for (int index:result){
             System.out.print(index+" ");
         }

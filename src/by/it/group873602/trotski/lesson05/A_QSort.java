@@ -1,5 +1,6 @@
 package by.it.group873602.trotski.lesson05;
 
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -52,7 +53,8 @@ public class A_QSort {
         @Override
         public int compareTo(Object o) {
             //подумайте, что должен возвращать компаратор отрезков
-            return 0;
+            if (o instanceof Integer)  return Integer.compare(this.start, (int) o);
+            return -1;
         }
     }
 
@@ -82,16 +84,60 @@ public class A_QSort {
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
 
 
+        quickSort(segments, 0, segments.length - 1);
+
+        for (int i = 0; i < points.length; i++) {
+            int count = 0;
+            for (Segment segment : segments) {
+                if (points[i] <= segment.stop && points[i] >= segment.start) {
+                    count++;
+                }
+                if (points[i] < segment.start) {
+                    break;
+                }
+
+            }
+            result[i] = count;
+        }
 
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
 
+    public void quickSort(Segment arr[], int begin, int end) {
+        if (begin < end) {
+            int partitionIndex = partition(arr, begin, end);
+            quickSort(arr, begin, partitionIndex - 1);
+            quickSort(arr, partitionIndex + 1, end);
+        }
+    }
+
+    private int partition(Segment arr[], int begin, int end) {
+        Segment pivot = arr[end];
+        int i = (begin - 1);
+
+        for (int j = begin; j < end; j++) {
+            if (arr[j].compareTo(pivot) <= 0) {
+                i++;
+                Segment swapTemp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = swapTemp;
+                //i++;
+            }
+        }
+
+        Segment swapTemp = arr[i + 1];
+        arr[i + 1] = arr[end];
+        arr[end] = swapTemp;
+
+        return i + 1;
+    }
+
 
     public static void main(String[] args) throws FileNotFoundException {
         String root = System.getProperty("user.dir") + "/src/";
-        InputStream stream = new FileInputStream(root + "by/it/a_khmelev/lesson05/dataA.txt");
+        InputStream stream = new FileInputStream(root + "by/it/group873602/trotski/lesson05/dataA.txt");
         A_QSort instance = new A_QSort();
         int[] result=instance.getAccessory(stream);
         for (int index:result){

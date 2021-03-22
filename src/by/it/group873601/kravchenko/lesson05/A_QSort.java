@@ -38,49 +38,55 @@ import java.util.Scanner;
 public class A_QSort {
 
     //отрезок
-    private class Segment  implements Comparable<Segment> {
+    private class Segment implements Comparable<Segment> {
         int start;
         int stop;
 
-        Segment(int start, int stop){
-            this.start = start;
-            this.stop = stop;
+        Segment(int start, int stop) {
+            if (start < stop) {
+                this.start = start;
+                this.stop = stop;
+            }
             //тут вообще-то лучше доделать конструктор на случай если
             //концы отрезков придут в обратном порядке
+            else {
+                this.start = stop;
+                this.stop = start;
+            }
+
         }
 
         @Override
         public int compareTo(Segment o) {
             //подумайте, что должен возвращать компаратор отрезков
-            if ((start - o.start) != 0)
-                return start - o.start;
-            else
-                return stop - o.stop;
+            if (this.start == o.start)
+                return Integer.compare(this.stop, o.stop);
+            return Integer.compare(this.start, o.start);
         }
     }
 
-    private int partition(Segment[] segments, int low, int high) {
-        Segment x = segments[low];
-        int m = low;
-        for (int i = low + 1; i <=high; i++) {
-            if (segments[i].compareTo(x) <= 0) {
-                m++;
-                Segment temp = segments[i];
-                segments[i] = segments[m];
-                segments[m] = temp;
+    private int partition(Segment[] segments, int left, int right) {
+        Segment pivot = segments[left];
+        int j = left;
+        for (int i = left + 1; i < right; i++) {
+            if (segments[i].compareTo(pivot) <= 0) {
+                j++;
+                Segment temp = segments[j];
+                segments[j] = segments[i];
+                segments[i] = temp;
             }
         }
-        Segment temp = segments[low];
-        segments[low] = segments[m];
-        segments[m] = temp;
-        return m;
+        Segment temp = segments[left];
+        segments[left] = segments[j];
+        segments[j] = temp;
+        return j;
     }
 
-    private void quickSort(Segment[] segments, int low, int high) {
-        if (low < high) {
-            int m = partition(segments, low, high);
-            quickSort(segments, low, m - 1);
-            quickSort(segments, m + 1, high);
+    private void quickSort(Segment[] segments, int left, int right) {
+        if (left < right) {
+            int m = partition(segments, left, right); //индекс
+            quickSort(segments, left, m - 1); //левая часть от индекса
+            quickSort(segments, m + 1, right); //правая часть от индекса
         }
     }
 
@@ -91,26 +97,34 @@ public class A_QSort {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         //число отрезков отсортированного массива
         int n = scanner.nextInt();
-        Segment[] segments=new Segment[n];
+        Segment[] segments = new Segment[n];
         //число точек
         int m = scanner.nextInt();
-        int[] points=new int[m];
-        int[] result=new int[m];
+        int[] points = new int[m];
+        int[] result = new int[m];
 
         //читаем сами отрезки
         for (int i = 0; i < n; i++) {
             //читаем начало и конец каждого отрезка
-            segments[i]=new Segment(scanner.nextInt(),scanner.nextInt());
+            segments[i] = new Segment(scanner.nextInt(), scanner.nextInt());
         }
         //читаем точки
         for (int i = 0; i < m; i++) {
-            points[i]=scanner.nextInt();
+            points[i] = scanner.nextInt();
         }
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
 
-
-
+        quickSort(segments, 0, segments.length - 1);
+        for (int i = 0; i < m; i++) {
+            int j = 0;
+            while (j < segments.length && points[i] < segments[j].start)
+                j++;
+            while (j < segments.length && points[i] >= segments[j].start && points[i] <= segments[j].stop) {
+                result[i]++;
+                j++;
+            }
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
@@ -121,9 +135,9 @@ public class A_QSort {
         String root = System.getProperty("user.dir") + "/src/";
         InputStream stream = new FileInputStream(root + "by/it/a_khmelev/lesson05/dataA.txt");
         A_QSort instance = new A_QSort();
-        int[] result=instance.getAccessory(stream);
-        for (int index:result){
-            System.out.print(index+" ");
+        int[] result = instance.getAccessory(stream);
+        for (int index : result) {
+            System.out.print(index + " ");
         }
     }
 

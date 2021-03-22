@@ -35,6 +35,8 @@ Sample Output:
 
 public class C_GetInversions {
 
+    int inversCount = 0;
+
     int calc(InputStream stream) throws FileNotFoundException {
         //подготовка к чтению данных
         Scanner scanner = new Scanner(stream);
@@ -49,18 +51,48 @@ public class C_GetInversions {
         int result = 0;
         //!!!!!!!!!!!!!!!!!!!!!!!!     тут ваше решение   !!!!!!!!!!!!!!!!!!!!!!!!
 
-
-
-
-
-
-
+        mergeSort(a, 0, a.length-1);
+        result = inversCount;
 
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
 
+
+    int[] merge(int[] ar_1, int[] ar_2){
+        int max = ar_1.length + ar_2.length;
+        int[] result = new int[max];
+        int m = 0, n = 0;
+        for (int i = 0; i < max; i++){
+            if (m >= ar_1.length & n < ar_2.length){
+                result[i] = ar_2[n];
+                n++;
+            }else if(n >= ar_2.length & m < ar_1.length){
+                result[i] = ar_1[m];
+                m++;
+            }else if (ar_1[m] <= ar_2[n] & m < ar_1.length){
+                result[i] = ar_1[m];
+                m++;
+            }else {
+                inversCount = ar_1.length - i;
+                result[i] = ar_2[n];
+                n++;
+            }
+        }
+        return result;
+    }
+
+    int[] mergeSort(int[] arr, int l, int r){
+        int[] result = new int[1];
+        int index = (int)(l + r) / 2;
+        if (l < r){
+            return merge(mergeSort(arr, l, index), mergeSort(arr, index + 1, r));
+        }else {
+            result[0] = arr[l];
+            return result;
+        }
+    }
 
     public static void main(String[] args) throws FileNotFoundException {
         String root = System.getProperty("user.dir") + "/src/";

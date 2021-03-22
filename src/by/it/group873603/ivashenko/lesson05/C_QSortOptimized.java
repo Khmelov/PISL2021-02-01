@@ -44,10 +44,121 @@ public class C_QSortOptimized {
 
         @Override
         public int compareTo(Object o) {
-            //подумайте, что должен возвращать компаратор отрезков
-            return 0;
+
+          if(o instanceof Integer){
+              return Integer.compare(this.start,(int) o);
+          }
+          return -1;
         }
     }
+    void sortirovk(Segment[] input, int left, int right) {
+        if (right > left) {
+            return;
+        }
+
+        if (input[left].compareTo(input[right]) > 0) {
+            swapsort(input, left, right);
+        }
+        Segment segment = input[left];
+        Segment q = input[right];
+        int lt = left + 1;
+        int gt = right - 1;
+        int k = lt;
+
+
+
+
+
+
+        while (k <= gt) {
+            if (input[k].compareTo(segment) < 0) {
+                swapsort(input, k, lt++);
+            }
+            else if (input[k].compareTo(q) >= 0) {
+                while (input[gt].compareTo(q) > 0 && k < gt) {
+                    --gt;
+                }
+                swapsort(input, k, gt--);
+
+                if (input[k].compareTo(segment) < 0) {
+                    swapsort(input, k, lt++);
+                }
+            }
+            ++k;
+        }
+
+
+
+        lt--;
+        gt++;
+
+
+
+
+
+        swapsort(input, left, lt);
+        swapsort(input, right, gt);
+
+        sortirovk(input, left, --lt);
+        sortirovk(input, ++lt, --gt);
+        sortirovk(input, ++gt, right);
+    }
+
+    private void swapsort(Segment[] input, int i, int j) {
+        Segment temp = input[i];
+        input[i] = input[j];
+        input[j] = temp;
+    }
+
+    int count(Segment[] input, int value, int length) {
+        int i = 0;
+        int j = 0;
+
+        i = first(input, 0, length - 1, value, length);
+
+        if(i == -1) {
+            return i;
+        }
+
+        j = last(input, i, length - 1, value, length);
+
+        return j - i + 1;
+    }
+
+    int first(Segment[] input, int low, int high, int value, int length) {
+        if(high >= low) {
+            int mid = (low + high) % 2 == 0 ? (low + high) / 2 : ((low + high) / 2) + 1;
+
+            if((mid == 0 || value > input[mid - 1].start && value > input[mid - 1].stop) && (value >= input[mid].start && value <= input[mid].stop)) {
+                return mid;
+            }
+            else if(value > input[mid].start && value > input[mid].stop) {
+                return first(input, (mid + 1), high, value, length);
+            }
+            else {
+                return first(input, low, (mid - 1), value, length);
+            }
+        }
+        return -1;
+    }
+
+    int last(Segment[] input, int low, int high, int value, int length) {
+        if(high >= low) {
+            int mid = (low + high) % 2 == 0 ? (low + high) / 2 : ((low + high) / 2) + 1;
+
+            if((mid == length - 1 || value < input[mid + 1].start && value < input[mid + 1].stop) && (value >= input[mid].start && value <= input[mid].stop)) {
+                return mid;
+            }
+            else if(value < input[mid].start && value < input[mid].stop) {
+                return last(input, low, (mid - 1), value, length);
+            }
+            else {
+                return last(input, (mid + 1), high, value, length);
+            }
+        }
+        return -1;
+    }
+
 
 
     int[] getAccessory2(InputStream stream) throws FileNotFoundException {
@@ -73,7 +184,12 @@ public class C_QSortOptimized {
         }
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
+        sortirovk(segments, 0, segments.length - 1);
 
+        for (int i = 0; i < points.length; i++) {
+            int count = count(segments, points[i], segments.length);
+            result[i] = count == -1 ? 0 : count;
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
@@ -82,7 +198,7 @@ public class C_QSortOptimized {
 
     public static void main(String[] args) throws FileNotFoundException {
         String root = System.getProperty("user.dir") + "/src/";
-        InputStream stream = new FileInputStream(root + "by/it/a_khmelev/lesson05/dataC.txt");
+        InputStream stream = new FileInputStream(root + "by/it/group873603/ivashenko/lesson05/dataC.txt");
         C_QSortOptimized instance = new C_QSortOptimized();
         int[] result=instance.getAccessory2(stream);
         for (int index:result){

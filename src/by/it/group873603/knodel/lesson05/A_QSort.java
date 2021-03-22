@@ -43,8 +43,15 @@ public class A_QSort {
         int stop;
 
         Segment(int start, int stop){
-            this.start = start;
-            this.stop = stop;
+            if (start > stop) {
+                this.start = stop;
+                this.stop = start;
+            }
+            else {
+                this.start = start;
+                this.stop = stop;
+            }
+
             //тут вообще-то лучше доделать конструктор на случай если
             //концы отрезков придут в обратном порядке
         }
@@ -52,8 +59,41 @@ public class A_QSort {
         @Override
         public int compareTo(Object o) {
             //подумайте, что должен возвращать компаратор отрезков
-            return 0;
+            if (o instanceof Integer) {
+                return Integer.compare(this.start, (int) o);
+            }
+            return -1;
         }
+    }
+
+    void quickSort(Segment[] arr, int begin, int end) {
+        if (begin < end) {
+            int partitionIndex = partition(arr, begin, end);
+
+            quickSort(arr, begin, partitionIndex - 1);
+            quickSort(arr, partitionIndex + 1, end);
+        }
+    }
+
+    int partition(Segment[] arr, int begin, int end) {
+        Segment rev = arr[end];
+        int i = begin - 1;
+
+        for (int j = begin; j < end; j++) {
+            if (arr[j].compareTo(rev) <= 0) {
+                i++;
+
+                Segment temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+        }
+
+        Segment temp = arr[i + 1];
+        arr[i + 1] = arr[end];
+        arr[end] = temp;
+
+        return i + 1;
     }
 
 
@@ -81,7 +121,24 @@ public class A_QSort {
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
 
+        for (int i = 0; i < points.length; i++) {
+            int count = 0;
 
+            int j = 0;
+            while(j < segments.length) {
+                if (points[i] >= segments[j].start && points[i] <= segments[j].stop) {
+                    count++;
+                }
+                else {
+                    while(points[i] <= segments[j].start && points[i] >= segments[j].stop) {
+                        j++;
+                    }
+                }
+                j++;
+            }
+
+            result[i] = count;
+        }
 
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!

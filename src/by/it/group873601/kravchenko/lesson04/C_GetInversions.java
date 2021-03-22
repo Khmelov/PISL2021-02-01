@@ -68,7 +68,7 @@ public class C_GetInversions {
             if (j == right_len || (i < left_arr.length && left_arr[i] <= right_arr[j])) {
                 result[k] = left_arr[i];
                 i++;
-            } else {
+            } else { //if left_element > right_element
                 count += left_arr.length - i;
                 result[k] = right_arr[j];
                 j++;

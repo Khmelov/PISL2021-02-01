@@ -52,8 +52,6 @@ public class C_GetInversions {
 
         result = mergeSortAndCount(a, 0, n - 1);
 
-
-
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
@@ -77,6 +75,7 @@ public class C_GetInversions {
             arr[k++] = left[i++];
         while (j < right.length)
             arr[k++] = right[j++];
+
         return swaps;
     }
 

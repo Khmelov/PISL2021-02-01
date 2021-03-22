@@ -2,6 +2,8 @@ package by.it.group873603.Scheglov.lesson03;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 // Lesson 3. B_Huffman.
@@ -50,10 +52,24 @@ public class B_Huffman {
         Integer length = scanner.nextInt();
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! НАЧАЛО ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         //тут запишите ваше решение
+        Map<String, Character> map = new HashMap<>();
 
+        for (int i = 0; i < count; i++) {
+            String str = scanner.next();
+            Character symbol = str.charAt(0);
+            String code = scanner.next();
+            map.put(code, symbol);
+        }
 
-
-
+        String str = scanner.next();
+        String current = "";
+        for (char c : str.toCharArray()) {
+            current += c;
+            if (map.containsKey(current)) {
+                result.append(map.get(current));//получаем value (в нашем случае букву) по ключу
+                current = "";
+            }
+        }
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! КОНЕЦ ЗАДАЧИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         return result.toString(); //01001100100111
     }

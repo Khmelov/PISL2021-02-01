@@ -35,6 +35,37 @@ Sample Output:
 
 public class C_GetInversions {
 
+    private static int inverseCount;
+
+    private static int[] sort(int[] array, int left, int right) {
+        if (left > right - 1) {
+            return new int[]{array[left]};
+        }
+        int mid = left + (right - left) / 2;
+        return merge(sort(array, left, mid), sort(array, mid + 1, right));
+    }
+
+    static int[] merge(int[] arrayL, int[] arrayR) {
+        int leftInd = 0, rightInd = 0, resInd = 0;
+        int[] result = new int[arrayL.length + arrayR.length];
+        while (leftInd < arrayL.length && rightInd < arrayR.length) {
+            if (arrayL[leftInd] <= arrayR[rightInd]) {
+                result[resInd++] = arrayL[leftInd++];
+            } else {
+                result[resInd++] = arrayR[rightInd++];
+                inverseCount += (arrayL.length - leftInd);
+            }
+        }
+        while (leftInd < arrayL.length) {
+            result[resInd++] = arrayL[leftInd++];
+        }
+        while (rightInd < arrayR.length) {
+            result[resInd++] = arrayR[rightInd++];
+        }
+        return result;
+    }
+
+
     int calc(InputStream stream) throws FileNotFoundException {
         //подготовка к чтению данных
         Scanner scanner = new Scanner(stream);
@@ -48,15 +79,8 @@ public class C_GetInversions {
         }
         int result = 0;
         //!!!!!!!!!!!!!!!!!!!!!!!!     тут ваше решение   !!!!!!!!!!!!!!!!!!!!!!!!
-
-
-
-
-
-
-
-
-
+        sort(a, 0, a.length - 1);
+        result = inverseCount;
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
